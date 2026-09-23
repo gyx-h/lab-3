@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+    //Import an external JS file to load the randomInt() function (from exercise 3, used to generate a random number between 1 and 100)
+    <script src="randominteger.js"></script>
+    <script>
+        function startGame(){       //Define the game start function startGame
+            const answer=randomInt();       //Call randomInt() to generate a random answer between 1 and 100, const means the answer cannot be changed once assigned
+            let guessHistory=[];      //Create an empty array to store all the numbers the user has guessed (history)
+            let remainTurns=10;     //Set the remaining guess attempts, starting at 10
+            while(remainTurns>0){       //while loop: keep playing as long as remaining tries > 0
+                //Pop up an input box to show game info; `backtick template strings, ${} to read variables, n for a new line
+                let input=prompt(`Guess the Number Game\nRange: 1~100\nRemaining attempts: ${remainTurns}\nYour previous guesses: ${guessHistory.join(', ')}`);
+                //If the user clicks 'Cancel' on the popup, the input value will be null, and break will immediately exit the loop, ending this round.
+                if(input===null)
+                    break;
+                let guess=Number(input);        //Convert the text input by the user to a number and store it in guess
+                if(isNaN(guess) || guess<1 || guess>100){       //Check: if it's not a number, or if the number is less than 1 or greater than 100
+                    alert("Please enter a number between 1 and 100!");      //Popup prompt to enter a valid range
+                    //continue: Skip the rest of this loop's code and go straight to the next round of the while loop, without using up a count
+                    continue;
+                }
+                guessHistory.push(guess);       //Add this valid guess to the history array
+                remainTurns--;      //Reduce remaining attempts by 1 (use up one chance)
+                if(guess===answer){     //Check if the guess equals the answer (=== strictly equals, compares both value and type)
+                    alert(`Congratulations!You guessed it!The number is ${answer}`);    //Popup says you guessed it right
+                    break;      //Guessed it right, exit the while loop, this round is over
+                }
+                else if(guess>answer){      //If the guessed number > the answer
+                    alert("Too high.");     //The popup says the number is too big
+                }
+                else{       //If the guessed number < the answer
+                    alert("Too low.");      //The popup says the number is too small
+                }
+            }
+            //After the loop ends, if the remaining attempts are 0, it means all attempts are used up and you still haven't guessed it right
+            if(remainTurns===0){
+                alert(`No more attempts!The correct number was ${answer}`);
+            }
+            //confirm pops up a confirmation box asking if you want to play another round; clicking OK returns true, Cancel returns false
+            if(confirm("Play again?")){
+                startGame();
+            }
+        }
+        //Call the function, once the page loads, start the game immediately
+        startGame();
+    </script>
+</body>
+</html>
